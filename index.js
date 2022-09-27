@@ -55,7 +55,7 @@ async function sendTelemetry() {
   return monitor.ping({
     state: monitorState,
     series: event.workflow_run.id,
-    message: getMessage(monitorState),
+    message: getMessage(monitorState)
   })
 }
 
