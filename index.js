@@ -5,6 +5,7 @@ async function run() {
   try {
     core.info('** Cronitor for Github Actions **');
     core.setSecret(core.getInput('cronitor_key'))
+    core.info(core.getInput('event'))
 
     const event = JSON.parse(core.getInput('event'))
     if (!event?.workflow) {
