@@ -1,7 +1,7 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "name": "monitor-github-actions",
+  "version": "1.0",
+  "description": "Automatic Monitoring for Github Actions",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
@@ -11,21 +11,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/cronitorio/monitor-github-actions"
   },
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "Monitor",
+    "Cronitor"
   ],
-  "author": "",
+  "author": "Cronitor, Inc (https://cronitor.io)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/cronitorio/monitor-github-actions/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/cronitorio/monitor-github-actions/issues#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5"
+    "@actions/core": "^1.2.5",
+    "cronitor": "^2.3.2"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.31.1",

@@ -1,13 +1,21 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Cronitor for Github Actions'
+description: 'Automatic monitoring for Github Actions'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  event:
+    description: 'The latest workflow run event (forwarded from github.event.workflow_run)'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  github_token:
+    description: 'Github Token needed to relay workflow details and logs to Cronitor'
+    required: true
+  cronitor_key:
+    description: 'Cronitor API key used to sync monitor details and send telemetry'
+    required: true
+  cronitor_group:
+    description: 'Optionally add this workflow monitor to a Cronitor group'
+    required: false
+  cronitor_notify:
+    description: 'Optionally specify a notification list for alerts from this monitor'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
