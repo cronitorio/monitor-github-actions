@@ -1,4 +1,5 @@
-name: 'Cronitor Monitoring Integration'
+name: Cronitor Monitoring Integration
+
 on:
   workflow_run:
     workflows: ['*']
@@ -10,11 +11,10 @@ jobs:
     name: Send Telemetry
     steps:
       - name: Send execution details to the Cronitor for Github Actions agent
-        uses: cronitorio/monitor-github-actions@v1
+        uses: cronitorio/monitor-github-actions@v3
         with:
-          event: ${{ github.event.workflow_run }}
+          event: ${{ toJSON(github.event.workflow_run) }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           cronitor_key: ${{ secrets.CRONITOR_API_KEY }}
-          cronitor_group: 'CI/CD'
-          cronitor_notify: 'devops-slack'
-
+          cronitor_group: actions
+          cronitor_notify: devops-alerts

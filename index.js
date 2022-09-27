@@ -5,20 +5,22 @@ async function run() {
   try {
     core.info('** Cronitor for Github Actions **');
     core.setSecret(core.getInput('cronitor_key'))
-    if (!core.getInput('event').workflow) {
-      core.setFailed('Invalid event input: JSON expected')
+
+    const event = JSON.parse(core.getInput('event'))
+    if (!event?.workflow) {
+      core.setFailed('Invalid event input: workflow_run JSON expected')
       return null
     }
-    await putMonitorDetails()
-    return sendTelemetry()
+
+    await putMonitorDetails(event)
+    return sendTelemetry(event)
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
-async function putMonitorDetails() {
+async function putMonitorDetails(event) {
   core.info('Syncing workflow details to Cronitor')
-  const event = core.getInput('event')
   const cronitor_group = core.getInput('cronitor_group')
   const cronitor_notify = core.getInput('cronitor_notify')
 
@@ -41,11 +43,10 @@ async function putMonitorDetails() {
   return cronitor.Monitor.put(payload)
 }
 
-async function sendTelemetry() {
+async function sendTelemetry(event) {
   core.info('Sending telemetry to Cronitor');
-  const event = core.getInput('event')
   const monitor = new cronitor.Monitor(event.workflow.id);
-  const monitorState = getMonitorState()
+  const monitorState = getMonitorState(event)
 
   if (!monitorState) {
     core.info('No telemetry to send for this event');
@@ -55,12 +56,11 @@ async function sendTelemetry() {
   return monitor.ping({
     state: monitorState,
     series: event.workflow_run.id,
-    message: getMessage(monitorState)
+    message: getMessage({event, monitorState})
   })
 }
 
-function getMonitorState() {
-  const event = core.getInput('event')
+function getMonitorState(event) {
   if (event.action === 'completed' && event.workflow_run.conclusion === 'success') {
     return 'complete'
   }
@@ -74,8 +74,7 @@ function getMonitorState() {
   }
 }
 
-function getMessage(monitorState) {
-  const event = core.getInput('event')
+function getMessage({event, monitorState}) {
   if (monitorState === 'run') {
     return event.workflow_run.html_url
   }
