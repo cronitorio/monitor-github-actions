@@ -12522,8 +12522,13 @@ const cronitor = __nccwpck_require__(3387)(core.getInput('cronitor_key'));
 async function run() {
   try {
     core.info('** Cronitor for Github Actions **');
+    core.debug(core.getInput('event'))
+
     core.setSecret(core.getInput('cronitor_key'))
-    core.info(core.getInput('event'))
+    if (!core.getInput('event')) {
+      core.setFailed('Invalid event input: workflow_run JSON expected')
+      return true
+    }
 
     const event = JSON.parse(core.getInput('event'))
     if (!event?.workflow) {
@@ -12531,7 +12536,9 @@ async function run() {
       return null
     }
 
-    await putMonitorDetails(event)
+    const monitor = await putMonitorDetails(event)
+    core.debug(monitor)
+
     return sendTelemetry(event)
   } catch (error) {
     core.setFailed(error.message);
@@ -12547,8 +12554,8 @@ async function putMonitorDetails(event) {
     type: 'job',
     platform: 'github actions',
     name: event.workflow.name,
-    key: event.workflow.id,
-    defaultNote: 'Automatically synced using Cronitor for Github Actions. View this workflow on Github: ' +
+    key: `${event.workflow.id}`,
+    defaultNote: 'Automatically synced using Cronitor for Github Actions.\nView this workflow on Github:\n' +
       event.workflow.html_url,
   }
 

@@ -11,7 +11,7 @@ jobs:
     name: Send Telemetry
     steps:
       - name: Send execution details to the Cronitor for Github Actions agent
-        uses: cronitorio/monitor-github-actions@v3
+        uses: cronitorio/monitor-github-actions@v5
         with:
           event: ${{ toJSON(github.event.workflow_run) }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
