@@ -4,12 +4,12 @@ inputs:
   event:
     description: 'The latest workflow run event (forwarded from github.event.workflow_run)'
     required: true
-  github_token:
-    description: 'Github Token needed to relay logs to Cronitor'
-    required: false
   cronitor_key:
     description: 'Cronitor API key used to sync monitor details and send telemetry'
     required: true
+  github_token:
+    description: 'Github Token needed to relay logs to Cronitor'
+    required: false
   cronitor_group:
     description: 'Optionally add this workflow monitor to a Cronitor group'
     required: false
