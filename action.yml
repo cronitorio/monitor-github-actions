@@ -6,7 +6,7 @@ inputs:
     required: true
   github_token:
     description: 'Github Token needed to relay workflow details and logs to Cronitor'
-    required: true
+    required: false
   cronitor_key:
     description: 'Cronitor API key used to sync monitor details and send telemetry'
     required: true
