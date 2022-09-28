@@ -16,6 +16,9 @@ inputs:
   cronitor_notify:
     description: Optionally specify a notification list or channel for alerts from this monitor
     required: false
+branding:
+  icon: 'activity'
+  color: 'white'
 runs:
   using: node16
   main: dist/index.js
