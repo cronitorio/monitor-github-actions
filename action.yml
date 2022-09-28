@@ -1,21 +1,21 @@
-name: 'Cronitor for Github Actions'
-description: 'Automatic monitoring for Github Actions'
+name: Cronitor for Github Actions
+description: Automatic monitoring for Github Actions
 inputs:
   event:
-    description: 'The latest workflow run event (forwarded from github.event.workflow_run)'
+    description: The latest workflow run event (forwarded from github.event)
     required: true
   cronitor_key:
-    description: 'Cronitor API key used to sync monitor details and send telemetry'
+    description: Cronitor API key used to sync monitor details and send telemetry
     required: true
   github_token:
-    description: 'Github Token needed to relay logs to Cronitor'
+    description: Github Token is needed to relay logs to Cronitor
     required: false
   cronitor_group:
-    description: 'Optionally add this workflow monitor to a Cronitor group'
+    description: Optionally add this workflow monitor to a Cronitor group
     required: false
   cronitor_notify:
-    description: 'Optionally specify a notification list for alerts from this monitor'
+    description: Optionally specify a notification list or channel for alerts from this monitor
     required: false
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: node16
+  main: dist/index.js
