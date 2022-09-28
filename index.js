@@ -7,9 +7,10 @@ async function run() {
     core.debug(core.getInput('event'))
 
     core.setSecret(core.getInput('cronitor_key'))
+    core.setSecret(core.getInput('github_token'))
     if (!core.getInput('event')) {
       core.setFailed('Invalid event input: workflow_run JSON expected')
-      return true
+      return null
     }
 
     const event = JSON.parse(core.getInput('event'))
@@ -36,8 +37,8 @@ async function putMonitorDetails(event) {
     type: 'job',
     platform: 'github actions',
     name: event.workflow.name,
-    key: `${event.workflow.id}`,
-    defaultNote: 'Automatically synced using Cronitor for Github Actions.\nView this workflow on Github:\n' +
+    key: getKey(event),
+    defaultNote: 'Automatically synced by Cronitor.\n\nView this workflow on Github:\n' +
       event.workflow.html_url,
   }
 
@@ -53,7 +54,7 @@ async function putMonitorDetails(event) {
 
 async function sendTelemetry(event) {
   core.info('Sending telemetry to Cronitor');
-  const monitor = new cronitor.Monitor(event.workflow.id);
+  const monitor = new cronitor.Monitor(getKey(event));
   const monitorState = getMonitorState(event)
 
   if (!monitorState) {
@@ -86,6 +87,10 @@ function getMessage({event, monitorState}) {
   if (monitorState === 'run') {
     return event.workflow_run.html_url
   }
+}
+
+function getKey(event) {
+  return `${event.repository.id}-${event.workflow.id}`
 }
 
 
