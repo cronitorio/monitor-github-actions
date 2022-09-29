@@ -1,6 +1,6 @@
 # Monitor Github Actions by Cronitor
 
-### Automatically sync and monitor Github Actions Workflows using [Cronitor.io](https://cronitor.io) and a simple Github Action. 
+### Automatically monitor Github Actions Workflows using [Cronitor.io](https://cronitor.io) and a simple Github Action. 
 
 ## Features
 
@@ -10,8 +10,8 @@
 
 ## Usage
 
-1. #### Add a ``CRONITOR_KEY`` secret in yout repo, copying your Cronitor API key from https://cronitor.io/app/settings/api
-2. #### Add a new ``cronitor.yml`` workflow to your repo, copying this example yaml. Push the new workflow to your to your ``main`` branch.  
+1. #### Add a ``CRONITOR_API_KEY`` secret in your repo, copying your Cronitor API key from https://cronitor.io/app/settings/api
+2. #### Add a new ``cronitor.yml`` workflow to your repo, copying this example yaml. Push the new workflow to your ``main`` branch.  
 3. #### Done! The Cronitor Monitoring Relay will be invoked automatically for every workflow that runs in your repo.
 ```yaml
 name: Cronitor Monitoring Relay
@@ -61,8 +61,15 @@ on:
     types: [requested,completed]
 ```
 
-## Configuring Alert Settings
-After adding the Cronitor workflow yaml, your repo's workflows will appear in Cronitor the first time they run. From the 
+## Configuring Alerts
+
+### Recipients
+Alert recipients can be managed directly from this configuration file using the optional ``cronitor_notify`` input.
+Provide a [notification list](https://cronitor.io/app/settings/alerts) using its key, or specify a single recipient, e.g.
+`email:shane@cronitor.io`.
+
+### Alert Settings
+After adding the Cronitor Relay yaml, your workflows will appear on your Cronitor dashboard the first time they run. From the 
 dashboard, you will be able to customize alert preferences, including:
 - Be alerted only if a workflow persistently fails 
 - Be alerted if a workflow does not run or complete at least once in a given time span.  
