@@ -1,12 +1,12 @@
 # Monitor Github Actions by Cronitor
 
-### Automatically monitor Github Actions Workflows using [Cronitor.io](https://cronitor.io) and a simple Github Action. 
+Automatically monitor Github Actions Workflows using [Cronitor.io](https://cronitor.io) and a simple Github Action. 
 
 ## Features
 
-- ### Automatically sync workflows to Cronitor when they run, no manual configuration. 
-- ### Send telemetry to Cronitor when jobs start, complete and fail. 
-- ### Monitor every workflow in your repo, or easily limit to specific workflows.
+- #### Automatically sync workflows to Cronitor when they run, no manual configuration. 
+- #### Send telemetry to Cronitor when jobs start, complete and fail. 
+- #### Monitor every workflow in your repo, or easily limit to specific workflows.
 
 ## Usage
 
