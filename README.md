@@ -27,7 +27,7 @@ jobs:
     name: Send Telemetry
     steps:
       - name: Send execution details to the Cronitor for Github Actions agent
-        uses: cronitorio/monitor-github-actions@v7
+        uses: cronitorio/monitor-github-actions@v8
         with:
           event: ${{ toJSON(github.event) }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -43,11 +43,10 @@ jobs:
 |---------------------|----------|----------------------------------------------------|
 | ``event``           | Yes      | Triggering event (passed from ``github.event``)    |
 | ``cronitor_key``    | Yes      | Your Cronitor API key                              |
-| ``github_token``    | No       | To relay workflow logs, pass your ``GITHUB_TOKEN`` |
+| ``github_token``    | No       | Used to fetch workflow schedules from your repo    |
 | ``cronitor_group``  | No       | Add monitors to a Cronitor group                   |
 | ``cronitor_notify`` | No       | A notification list to use for alerts              |
-
-Note: Log relay is coming soon. 
+| ``key_format``      | No       | Monitor key format: ``slugified`` (default) or ``legacy`` | 
 
 ## Monitoring Specific Workflows
 By default, when you add the YAML for the Cronitor Monitoring Relay as an Action, it will be invoked automatically for every 
@@ -73,5 +72,12 @@ After adding the Cronitor Relay yaml, your workflows will appear on your Cronito
 dashboard, you will be able to customize alert preferences, including:
 - Be alerted only if a workflow persistently fails 
 - Be alerted if a workflow does not run or complete at least once in a given time span.  
-- Be alerted on workflow execution time and avoid surprise charges from Github.  
+- Be alerted on workflow execution time and avoid surprise charges from Github.
+
+## Changelog
+
+### v8
+- **Schedule sync**: Workflows with a `schedule` trigger now automatically sync their cron schedule to Cronitor. If you're passing `github_token` (as shown in the example above), this works automatically.
+- **Cleaner monitor keys**: Monitor keys now use a slugified workflow name format (`gh-my-workflow-name`) instead of numeric IDs.
+- **Backwards compatibility**: Existing users can set `key_format: legacy` to keep using the old key format and preserve their existing monitors.
 
