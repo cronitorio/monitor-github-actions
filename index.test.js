@@ -56,6 +56,24 @@ on:
   it('returns null for empty content', () => {
     expect(extractSchedule('')).toBe(null)
   })
+
+  it('handles step values in cron', () => {
+    const content = `
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+`
+    expect(extractSchedule(content)).toBe('*/15 * * * *')
+  })
+
+  it('handles ranges and lists in cron', () => {
+    const content = `
+on:
+  schedule:
+    - cron: '0,30 9-17 * * 1-5'
+`
+    expect(extractSchedule(content)).toBe('0,30 9-17 * * 1-5')
+  })
 })
 
 describe('getMonitorState', () => {
