@@ -182,8 +182,20 @@ function getMessage({event, monitorState}) {
   }
 }
 
-function getKey(event) {
+function getLegacyKey(event) {
+  return `${event.repository.id}-${event.workflow.id}`
+}
+
+function getSlugifiedKey(event) {
   return `gh-${slugify(event.workflow.name)}`
+}
+
+function getKey(event) {
+  const keyFormat = core.getInput('key_format') || 'slugified'
+  if (keyFormat === 'legacy') {
+    return getLegacyKey(event)
+  }
+  return getSlugifiedKey(event)
 }
 
 // Only run when executed directly (not when imported for testing)
@@ -195,5 +207,7 @@ module.exports = {
   slugify,
   extractSchedule,
   getMonitorState,
-  getKey
+  getKey,
+  getLegacyKey,
+  getSlugifiedKey
 }

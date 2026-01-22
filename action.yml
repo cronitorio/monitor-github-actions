@@ -16,6 +16,10 @@ inputs:
   cronitor_notify:
     description: Optionally specify a notification list or channel for alerts from this monitor
     required: false
+  key_format:
+    description: 'Monitor key format: "slugified" (default, gh-workflow-name) or "legacy" (repo-id-workflow-id)'
+    required: false
+    default: 'slugified'
 branding:
   icon: 'activity'
   color: 'white'

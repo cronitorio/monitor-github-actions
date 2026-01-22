@@ -1,4 +1,4 @@
-const { slugify, extractSchedule, getMonitorState, getKey } = require('./index')
+const { slugify, extractSchedule, getMonitorState, getKey, getLegacyKey, getSlugifiedKey } = require('./index')
 
 describe('slugify', () => {
   it('converts spaces to hyphens', () => {
@@ -92,18 +92,38 @@ describe('getMonitorState', () => {
   })
 })
 
-describe('getKey', () => {
+describe('getLegacyKey', () => {
+  it('generates key from repository and workflow IDs', () => {
+    const event = {
+      repository: { id: 123456 },
+      workflow: { id: 789012 }
+    }
+    expect(getLegacyKey(event)).toBe('123456-789012')
+  })
+})
+
+describe('getSlugifiedKey', () => {
   it('generates key with gh- prefix and slugified name', () => {
     const event = {
       workflow: { name: 'Deploy Production' }
     }
-    expect(getKey(event)).toBe('gh-deploy-production')
+    expect(getSlugifiedKey(event)).toBe('gh-deploy-production')
   })
 
   it('handles workflow names with special characters', () => {
     const event = {
       workflow: { name: 'CI/CD (Main)' }
     }
-    expect(getKey(event)).toBe('gh-cicd-main')
+    expect(getSlugifiedKey(event)).toBe('gh-cicd-main')
+  })
+})
+
+describe('getKey', () => {
+  it('defaults to slugified format', () => {
+    const event = {
+      workflow: { name: 'Deploy Production' },
+      repository: { id: 123456 }
+    }
+    expect(getKey(event)).toBe('gh-deploy-production')
   })
 })
