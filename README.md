@@ -78,6 +78,6 @@ dashboard, you will be able to customize alert preferences, including:
 
 ### v8
 - **Schedule sync**: Workflows with a `schedule` trigger now automatically sync their cron schedule to Cronitor.
-- **Cleaner monitor keys**: Monitor keys now use a slugified workflow name format (`gh-my-workflow-name`) instead of numeric IDs.
+- **Cleaner monitor keys**: Monitor keys now use a slugified workflow name format (`gh-my-workflow-name`) instead of numeric ID by default.
 - **Backwards compatibility**: Existing users can set `key_format: guid` to keep using the old key format and preserve their existing monitors.
 
