@@ -38,7 +38,7 @@ async function putMonitorDetails(event) {
     platform: 'github actions',
     name: event.workflow.name,
     key: getKey(event),
-    defaultNote: 'Automatically synced by Cronitor.\n\nView this workflow on Github:\n' +
+    defaultNote: 'View this workflow on Github:\n' +
       event.workflow.html_url,
   }
 
