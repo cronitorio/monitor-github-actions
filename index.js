@@ -186,5 +186,14 @@ function getKey(event) {
   return `gh-${slugify(event.workflow.name)}`
 }
 
+// Only run when executed directly (not when imported for testing)
+if (require.main === module) {
+  run()
+}
 
-run()
+module.exports = {
+  slugify,
+  extractSchedule,
+  getMonitorState,
+  getKey
+}
