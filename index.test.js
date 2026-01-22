@@ -1,4 +1,4 @@
-const { slugify, extractSchedule, getMonitorState, getKey, getLegacyKey, getSlugifiedKey } = require('./index')
+const { slugify, extractSchedule, getMonitorState, getKey, getIdKey, getSlugifiedKey } = require('./index')
 
 describe('slugify', () => {
   it('converts spaces to hyphens', () => {
@@ -110,13 +110,13 @@ describe('getMonitorState', () => {
   })
 })
 
-describe('getLegacyKey', () => {
+describe('getIdKey', () => {
   it('generates key from repository and workflow IDs', () => {
     const event = {
       repository: { id: 123456 },
       workflow: { id: 789012 }
     }
-    expect(getLegacyKey(event)).toBe('123456-789012')
+    expect(getIdKey(event)).toBe('123456-789012')
   })
 })
 

@@ -182,7 +182,7 @@ function getMessage({event, monitorState}) {
   }
 }
 
-function getLegacyKey(event) {
+function getIdKey(event) {
   return `${event.repository.id}-${event.workflow.id}`
 }
 
@@ -192,8 +192,8 @@ function getSlugifiedKey(event) {
 
 function getKey(event) {
   const keyFormat = core.getInput('key_format') || 'slugified'
-  if (keyFormat === 'legacy') {
-    return getLegacyKey(event)
+  if (keyFormat === 'id') {
+    return getIdKey(event)
   }
   return getSlugifiedKey(event)
 }
@@ -208,6 +208,6 @@ module.exports = {
   extractSchedule,
   getMonitorState,
   getKey,
-  getLegacyKey,
+  getIdKey,
   getSlugifiedKey
 }
