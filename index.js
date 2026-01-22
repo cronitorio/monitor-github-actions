@@ -182,7 +182,7 @@ function getMessage({event, monitorState}) {
   }
 }
 
-function getIdKey(event) {
+function getGuidKey(event) {
   return `${event.repository.id}-${event.workflow.id}`
 }
 
@@ -193,7 +193,7 @@ function getSlugifiedKey(event) {
 function getKey(event) {
   const keyFormat = core.getInput('key_format') || 'slugified'
   if (keyFormat === 'id') {
-    return getIdKey(event)
+    return getGuidKey(event)
   }
   return getSlugifiedKey(event)
 }
@@ -208,6 +208,6 @@ module.exports = {
   extractSchedule,
   getMonitorState,
   getKey,
-  getIdKey,
+  getGuidKey,
   getSlugifiedKey
 }

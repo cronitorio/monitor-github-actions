@@ -46,7 +46,7 @@ jobs:
 | ``github_token``    | No       | Used to fetch workflow schedules from your repo    |
 | ``cronitor_group``  | No       | Add monitors to a Cronitor group                   |
 | ``cronitor_notify`` | No       | A notification list to use for alerts              |
-| ``key_format``      | No       | Monitor key format: ``slugified`` (default) or ``id`` | 
+| ``key_format``      | No       | Monitor key format: ``slugified`` (default) or ``guid`` | 
 
 ## Monitoring Specific Workflows
 By default, when you add the YAML for the Cronitor Monitoring Relay as an Action, it will be invoked automatically for every 
@@ -79,5 +79,5 @@ dashboard, you will be able to customize alert preferences, including:
 ### v8
 - **Schedule sync**: Workflows with a `schedule` trigger now automatically sync their cron schedule to Cronitor.
 - **Cleaner monitor keys**: Monitor keys now use a slugified workflow name format (`gh-my-workflow-name`) instead of numeric IDs.
-- **Backwards compatibility**: Existing users can set `key_format: id` to keep using the old key format and preserve their existing monitors.
+- **Backwards compatibility**: Existing users can set `key_format: guid` to keep using the old key format and preserve their existing monitors.
 
