@@ -1,4 +1,4 @@
-const { slugify, extractSchedule, getMonitorState, getKey, getGuidKey, getSlugifiedKey } = require('./index')
+const { slugify, extractSchedules, getMonitorState, getKey, getGuidKey, getSlugifiedKey } = require('./index')
 
 describe('slugify', () => {
   it('converts spaces to hyphens', () => {
@@ -22,8 +22,8 @@ describe('slugify', () => {
   })
 })
 
-describe('extractSchedule', () => {
-  it('extracts cron schedule from workflow content', () => {
+describe('extractSchedules', () => {
+  it('extracts single cron schedule as array', () => {
     const content = `
 name: Test Workflow
 on:
@@ -31,7 +31,18 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 `
-    expect(extractSchedule(content)).toBe('0 6 * * *')
+    expect(extractSchedules(content)).toEqual(['0 6 * * *'])
+  })
+
+  it('extracts multiple cron schedules', () => {
+    const content = `
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    - cron: '0 18 * * *'
+    - cron: '0 0 * * 0'
+`
+    expect(extractSchedules(content)).toEqual(['0 6 * * *', '0 18 * * *', '0 0 * * 0'])
   })
 
   it('handles double-quoted cron expressions', () => {
@@ -40,7 +51,7 @@ on:
   schedule:
     - cron: "30 5 * * 1-5"
 `
-    expect(extractSchedule(content)).toBe('30 5 * * 1-5')
+    expect(extractSchedules(content)).toEqual(['30 5 * * 1-5'])
   })
 
   it('returns null when no schedule is present', () => {
@@ -50,11 +61,11 @@ on:
   push:
     branches: [main]
 `
-    expect(extractSchedule(content)).toBe(null)
+    expect(extractSchedules(content)).toBe(null)
   })
 
   it('returns null for empty content', () => {
-    expect(extractSchedule('')).toBe(null)
+    expect(extractSchedules('')).toBe(null)
   })
 
   it('handles step values in cron', () => {
@@ -63,7 +74,7 @@ on:
   schedule:
     - cron: '*/15 * * * *'
 `
-    expect(extractSchedule(content)).toBe('*/15 * * * *')
+    expect(extractSchedules(content)).toEqual(['*/15 * * * *'])
   })
 
   it('handles ranges and lists in cron', () => {
@@ -72,7 +83,7 @@ on:
   schedule:
     - cron: '0,30 9-17 * * 1-5'
 `
-    expect(extractSchedule(content)).toBe('0,30 9-17 * * 1-5')
+    expect(extractSchedules(content)).toEqual(['0,30 9-17 * * 1-5'])
   })
 })
 

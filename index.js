@@ -1,6 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const cronitor = require('cronitor')(core.getInput('cronitor_key'));
+const cronitor = require('cronitor')(core.getInput('cronitor_key'), {
+  apiVersion: '2025-11-28'
+});
 
 /**
  * Slugify a string to create a URL-safe key
@@ -18,10 +20,11 @@ function slugify(text) {
 }
 
 /**
- * Extract cron schedule from workflow content
+ * Extract all cron schedules from workflow content
  */
-function extractSchedule(workflowContent) {
+function extractSchedules(workflowContent) {
   const lines = workflowContent.split('\n');
+  const schedules = [];
   let inSchedule = false;
 
   for (const line of lines) {
@@ -36,7 +39,8 @@ function extractSchedule(workflowContent) {
       // Check for cron line
       const cronMatch = trimmed.match(/^-?\s*cron:\s*['"]?([^'"]+)['"]?$/);
       if (cronMatch) {
-        return cronMatch[1].trim();
+        schedules.push(cronMatch[1].trim());
+        continue;
       }
       // If we hit another top-level key, stop looking
       if (trimmed.match(/^[a-z_]+:/) && !trimmed.startsWith('-')) {
@@ -45,7 +49,7 @@ function extractSchedule(workflowContent) {
     }
   }
 
-  return null;
+  return schedules.length > 0 ? schedules : null;
 }
 
 /**
@@ -78,7 +82,7 @@ async function getWorkflowSchedule(event) {
 
     if (fileContent.content) {
       const content = Buffer.from(fileContent.content, 'base64').toString('utf8');
-      return extractSchedule(content);
+      return extractSchedules(content);
     }
   } catch (error) {
     core.debug(`Failed to fetch workflow schedule: ${error.message}`);
@@ -128,11 +132,11 @@ async function putMonitorDetails(event) {
       event.workflow.html_url,
   }
 
-  // Fetch and add schedule if available
-  const schedule = await getWorkflowSchedule(event)
-  if (schedule) {
-    core.info(`Found workflow schedule: ${schedule}`)
-    payload['schedule'] = schedule
+  // Fetch and add schedules if available
+  const schedules = await getWorkflowSchedule(event)
+  if (schedules) {
+    core.info(`Found workflow schedules: ${schedules.join(', ')}`)
+    payload['schedules'] = schedules
   }
 
   if (cronitor_group) {
@@ -192,7 +196,7 @@ function getSlugifiedKey(event) {
 
 function getKey(event) {
   const keyFormat = core.getInput('key_format') || 'slugified'
-  if (keyFormat === 'id') {
+  if (keyFormat === 'guid') {
     return getGuidKey(event)
   }
   return getSlugifiedKey(event)
@@ -205,7 +209,7 @@ if (require.main === module) {
 
 module.exports = {
   slugify,
-  extractSchedule,
+  extractSchedules,
   getMonitorState,
   getKey,
   getGuidKey,
