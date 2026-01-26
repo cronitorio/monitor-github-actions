@@ -28,7 +28,7 @@
   "dependencies": {
     "@actions/core": "^1.9.1",
     "@actions/github": "^7.0.0",
-    "cronitor": "^2.3.3"
+    "cronitor": "^2.6.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.34.0",
