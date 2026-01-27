@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/cronitorio/monitor-github-actions/issues#readme",
   "dependencies": {
-    "@actions/core": "^1.9.1",
+    "@actions/core": "^2.0.3",
     "@actions/github": "^7.0.0",
     "cronitor": "^2.3.3"
   },
