@@ -31,7 +31,7 @@
     "cronitor": "^2.3.3"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.34.0",
+    "@vercel/ncc": "^0.45.0",
     "eslint": "^8.35.0",
     "jest": "^30.5.2"
   },
